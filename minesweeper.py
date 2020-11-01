@@ -61,12 +61,12 @@ pygame.display.update()
 #Initialize Assets
 font = pygame.font.Font("/Users/jacob/Python/PyGame Assets/atari-classic-font/AtariClassicExtrasmooth-LxZy.ttf", int(squareLen - squareLen/5*2))
 largeFont = pygame.font.Font("/Users/jacob/Python/PyGame Assets/atari-classic-font/AtariClassicSmooth-XzW2.ttf", 50)
-flag = pygame.image.load("/Users/jacob/Python/PyGame Assets/MineSweeper/flag.png")
-bomb = pygame.image.load("/Users/jacob/Python/PyGame Assets/MineSweeper/bomb.png")
-wrong = pygame.image.load("/Users/jacob/Python/PyGame Assets/MineSweeper/x.png")
-digSound = pygame.mixer.Sound("/Users/jacob/Python/PyGame Assets/MineSweeper/dirt.mp3")
-flagSound = pygame.mixer.Sound("/Users/jacob/Python/PyGame Assets/MineSweeper/flag.mp3")
-bombSound = pygame.mixer.Sound("/Users/jacob/Python/PyGame Assets/MineSweeper/bomb.mp3")
+flag = pygame.image.load("/Users/jacob/Python/Programs/Minesweeper/Assets/flag.png")
+bomb = pygame.image.load("/Users/jacob/Python/Programs/Minesweeper/Assets/bomb.png")
+wrong = pygame.image.load("/Users/jacob/Python/Programs/Minesweeper/Assets/x.png")
+digSound = pygame.mixer.Sound("/Users/jacob/Python/Programs/Minesweeper/Assets/dirt.mp3")
+flagSound = pygame.mixer.Sound("/Users/jacob/Python/Programs/Minesweeper/Assets/flag.mp3")
+bombSound = pygame.mixer.Sound("/Users/jacob/Python/Programs/Minesweeper/Assets/bomb.mp3")
 digSound.set_volume(.2)
 flagSound.set_volume(.1)
 bombSound.set_volume(.1)
@@ -94,6 +94,7 @@ timerStart = False
 start_time = 0
 dispTime = "0:00.000"
 minute = 0
+win = True
 #Function To Find Squares Neighboring The Original Square Argument
 def getSquares(x, y):
 	nearSquares = []
