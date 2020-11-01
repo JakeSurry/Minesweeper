@@ -60,7 +60,7 @@ pygame.display.set_caption("Minesweeper")
 pygame.display.update()
 #Initialize Assets
 font = pygame.font.Font("/Users/jacob/Python/PyGame Assets/atari-classic-font/AtariClassicExtrasmooth-LxZy.ttf", int(squareLen - squareLen/5*2))
-largeFont = pygame.font.Font("/Users/jacob/Python/PyGame Assets/atari-classic-font/AtariClassicSmooth-XzW2.ttf", 50)
+largeFont = pygame.font.Font("/Users/jacob/Python/PyGame Assets/atari-classic-font/AtariClassicSmooth-XzW2.ttf", 40)
 flag = pygame.image.load("/Users/jacob/Python/Programs/Minesweeper/Assets/flag.png")
 bomb = pygame.image.load("/Users/jacob/Python/Programs/Minesweeper/Assets/bomb.png")
 wrong = pygame.image.load("/Users/jacob/Python/Programs/Minesweeper/Assets/x.png")
@@ -72,6 +72,7 @@ flagSound.set_volume(.1)
 bombSound.set_volume(.1)
 #Resize Images
 flag = pygame.transform.scale(flag, (int(squareLen), int(squareLen)))
+dispFlag = pygame.transform.scale(flag, (50, 50))
 bomb = pygame.transform.scale(bomb, (int(squareLen), int(squareLen)))
 wrong = pygame.transform.scale(wrong, (int(squareLen), int(squareLen)))
 #Initialize Variables
@@ -94,7 +95,7 @@ timerStart = False
 start_time = 0
 dispTime = "0:00.000"
 minute = 0
-win = True
+win = None
 #Function To Find Squares Neighboring The Original Square Argument
 def getSquares(x, y):
 	nearSquares = []
@@ -160,24 +161,17 @@ def rectBorder(x, y, colour):
 	pygame.draw.rect(display, colour, (x * squareLen + squareLen - squareBorder, y * squareLen, squareBorder, squareLen))
 #Main Game Loop
 while gameLoop == "notOver":
-	#Draws Timer Background
-	pygame.draw.rect(display, white, (10, 710, 680, 80))
-	#Begines Timer
-	if timerStart == True:
-		#Translates Ticks Into Seconds
-		totalSec = (pygame.time.get_ticks() - start_time) / 1000
-		sec = totalSec % 60
-		minute = int((totalSec - sec) / 60)
-		#Generates Timer Text 
-		if len(str(int(sec))) == 1:
-			dispTime = str(minute) + ":" + "0" + str(round(sec, 3))
-		elif len(str(int(sec))) == 2:
-			dispTime = str(minute) + ":" + str(round(sec, 3)) 
-	#Displays Timer
-	time = largeFont.render(str(dispTime), False, black, white)
-	timeRect = time.get_rect()
-	timeRect = (150, 725)
-	display.blit(time, timeRect)
+	#Checks If Player Won
+	totalCount = 0
+	totalFlagCount = 0
+	for i in range(len(topBoard)):
+		count = topBoard[i].count(1)
+		flagCount = topBoard[i].count(2)
+		totalCount += count
+		totalFlagCount += flagCount
+	if totalCount == boardLen*boardLen - bombAmnt and totalFlagCount == bombAmnt:
+		win = True
+		gameLoop = "over"
 	#Gets Event
 	for event in pygame.event.get():
 		#Detects Quit Button
@@ -278,17 +272,35 @@ while gameLoop == "notOver":
 			elif topBoard[x][y] == 3:
 				display.blit(wrong, (x * squareLen, y * squareLen))
 				rectBorder(x, y, black)
-	#Checks If Player Won
-	totalCount = 0
-	totalFlagCount = 0
-	for i in range(len(topBoard)):
-		count = topBoard[i].count(1)
-		flagCount = topBoard[i].count(2)
-		totalCount += count
-		totalFlagCount += flagCount
-	if totalCount == boardLen*boardLen - bombAmnt and totalFlagCount == bombAmnt:
-		win = True
-		gameLoop = "over"
+	#Draws Timer Background
+	pygame.draw.rect(display, white, (10, 710, 680, 80))
+	#Begines Timer
+	if timerStart == True:
+		#Translates Ticks Into Seconds
+		totalSec = (pygame.time.get_ticks() - start_time) / 1000
+		sec = totalSec % 60
+		minute = int((totalSec - sec) / 60)
+		#Generates Timer Text 
+		if len(str(int(sec))) == 1:
+			dispTime = str(minute) + ":" + "0" + str(round(sec, 3))
+		elif len(str(int(sec))) == 2:
+			dispTime = str(minute) + ":" + str(round(sec, 3)) 
+	#Draws Timer
+	time = largeFont.render(str(dispTime), False, black, white)
+	timeRect = time.get_rect()
+	timeRect = (40, 730)
+	display.blit(time, timeRect)
+	#Draws Flag Counter
+	pygame.draw.rect(display, black, (414, 710, 15, 90))
+	pygame.draw.rect(display, black, (455, 725, 5, 50))
+	pygame.draw.rect(display, black, (510, 725, 5, 50))
+	pygame.draw.rect(display, black, (455, 720, 60, 5))
+	pygame.draw.rect(display, black, (455, 775, 60, 5))
+	display.blit(dispFlag, (460, 725))
+	flagCounter = largeFont.render(":" + str(totalFlagCount), False, black, white)
+	flagCounterRect = flagCounter.get_rect()
+	flagCounterRect = (520, 730)
+	display.blit(flagCounter, flagCounterRect)
 	#Updates Screen
 	pygame.display.update()
 #Checks If Player Won
@@ -301,7 +313,7 @@ if win:
 	pygame.display.update()
 	pygame.time.wait(5000)
 #Checks If Player Lost
-elif not win:
+elif win == False:
 	#Waits For Three Seconds
 	pygame.time.wait(3000)
 #Quits Program
