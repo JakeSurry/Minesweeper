@@ -34,6 +34,7 @@ while True:
 		for i in range(3):
 				print("")
 		print("Please enter a number!")
+		continue
 	if bombAmnt > boardLen**2/2:
 		for i in range(3):
 				print("")
