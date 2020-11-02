@@ -95,6 +95,7 @@ timerStart = False
 start_time = 0
 dispTime = "0:00.000"
 minute = 0
+totalFlagCount = 0
 win = None
 #Function To Find Squares Neighboring The Original Square Argument
 def getSquares(x, y):
@@ -161,17 +162,6 @@ def rectBorder(x, y, colour):
 	pygame.draw.rect(display, colour, (x * squareLen + squareLen - squareBorder, y * squareLen, squareBorder, squareLen))
 #Main Game Loop
 while gameLoop == "notOver":
-	#Checks If Player Won
-	totalCount = 0
-	totalFlagCount = 0
-	for i in range(len(topBoard)):
-		count = topBoard[i].count(1)
-		flagCount = topBoard[i].count(2)
-		totalCount += count
-		totalFlagCount += flagCount
-	if totalCount == boardLen*boardLen - bombAmnt and totalFlagCount == bombAmnt:
-		win = True
-		gameLoop = "over"
 	#Gets Event
 	for event in pygame.event.get():
 		#Detects Quit Button
@@ -301,6 +291,17 @@ while gameLoop == "notOver":
 	flagCounterRect = flagCounter.get_rect()
 	flagCounterRect = (520, 730)
 	display.blit(flagCounter, flagCounterRect)
+	#Checks If Player Won
+	totalCount = 0
+	totalFlagCount = 0
+	for i in range(len(topBoard)):
+		count = topBoard[i].count(1)
+		flagCount = topBoard[i].count(2)
+		totalCount += count
+		totalFlagCount += flagCount
+	if totalCount == boardLen*boardLen - bombAmnt and totalFlagCount == bombAmnt:
+		win = True
+		gameLoop = "over"
 	#Updates Screen
 	pygame.display.update()
 #Checks If Player Won
