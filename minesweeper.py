@@ -281,17 +281,6 @@ while gameLoop == "notOver":
 	timeRect = time.get_rect()
 	timeRect = (40, 730)
 	display.blit(time, timeRect)
-	#Draws Flag Counter
-	pygame.draw.rect(display, black, (414, 710, 15, 90))
-	pygame.draw.rect(display, black, (455, 725, 5, 50))
-	pygame.draw.rect(display, black, (510, 725, 5, 50))
-	pygame.draw.rect(display, black, (455, 720, 60, 5))
-	pygame.draw.rect(display, black, (455, 775, 60, 5))
-	display.blit(dispFlag, (460, 725))
-	flagCounter = largeFont.render(":" + str(totalFlagCount), False, black, white)
-	flagCounterRect = flagCounter.get_rect()
-	flagCounterRect = (520, 730)
-	display.blit(flagCounter, flagCounterRect)
 	#Checks If Player Won
 	totalCount = 0
 	totalFlagCount = 0
@@ -303,6 +292,17 @@ while gameLoop == "notOver":
 	if totalCount == boardLen*boardLen - bombAmnt and totalFlagCount == bombAmnt:
 		win = True
 		gameLoop = "over"
+	#Draws Flag Counter
+	pygame.draw.rect(display, black, (414, 710, 15, 90))
+	pygame.draw.rect(display, black, (455, 725, 5, 50))
+	pygame.draw.rect(display, black, (510, 725, 5, 50))
+	pygame.draw.rect(display, black, (455, 720, 60, 5))
+	pygame.draw.rect(display, black, (455, 775, 60, 5))
+	display.blit(dispFlag, (460, 725))
+	flagCounter = largeFont.render(":" + str(totalFlagCount), False, black, white)
+	flagCounterRect = flagCounter.get_rect()
+	flagCounterRect = (520, 730)
+	display.blit(flagCounter, flagCounterRect)
 	#Updates Screen
 	pygame.display.update()
 #Checks If Player Won
@@ -310,7 +310,7 @@ if win:
 	#Displays Win Message
 	winMessage = largeFont.render("You Win!", False, green, black)
 	winMessageRect = winMessage.get_rect()
-	winMessageRect = (150, 350)
+	winMessageRect = (200, 350)
 	display.blit(winMessage, winMessageRect)
 	pygame.display.update()
 	pygame.time.wait(5000)
